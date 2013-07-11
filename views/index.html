@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+
+<script type="text/javascript" src="javascripts/jquery.min.js"></script>
+<script type="text/javascript" src="javascripts/jquery.cookie.js"></script>
+<script type="text/javascript" src="javascripts/json2.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+	var socket = io.connect();
+
+	$(document).ready(function(){
+		$("#submit").click(function(){
+			alert($("#say").val());
+			socket.emit("say", {data:$("#say").val()});
+		});
+
+	});
+</script>
+
+
+<input type='text' id='say' />
+<input type='submit' id='submit' />
+<span id='content'></span>
+</html>
