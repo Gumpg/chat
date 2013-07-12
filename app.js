@@ -35,6 +35,7 @@ app.get('/', function(req, res){
 io.sockets.on("connection", function(socket){
   socket.on("say", function(data){
     console.log(data.data);
+    socket.broadcast.emit("tosay", data);
   });
 });
 

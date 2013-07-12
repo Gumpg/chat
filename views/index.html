@@ -3,7 +3,6 @@
 
 <script type="text/javascript" src="javascripts/jquery.min.js"></script>
 <script type="text/javascript" src="javascripts/jquery.cookie.js"></script>
-<script type="text/javascript" src="javascripts/json2.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
@@ -11,15 +10,35 @@
 
 	$(document).ready(function(){
 		$("#submit").click(function(){
-			alert($("#say").val());
 			socket.emit("say", {data:$("#say").val()});
+			saysome();
+
+
+
+		});
+
+		socket.on("tosay", function(data){
+			//alert(data.data);
+			var content = $("#content").html();
+			content = content + "</br>";
+			$("#content").html(content+ "别人说：" + data.data);
 		});
 
 	});
+
+	function saysome(){
+		var content = $("#content").html() + "</br>";
+		$("#content").html(content + "我说：" + $("#say").val());
+		$("#say").val("");
+
+	}
+
 </script>
 
 
 <input type='text' id='say' />
 <input type='submit' id='submit' />
-<span id='content'></span>
+<div>
+	<span id='content'></span>
+</div>
 </html>
