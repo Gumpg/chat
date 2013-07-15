@@ -7,13 +7,27 @@
 
 <script>
 	var socket = io.connect();
-
+	var user = $.cookie('user');
 	$(document).ready(function(){
+		
+		socket.emit("online", {user: user});
+		socket.on("online", function(data){
+			//alert(data.users);
+			var userlist = "";
+			for (var i = data.users.length - 1; i >= 0; i--) {
+				userlist = data.users[i] + userlist + "</br>";
+			};
+			$("#onlinelist").html(userlist);
+		});
+
+		// socket.on("offline", function(data){
+		// 	$("#onlinelist"),html(data.users);
+		// })
+
 		$("#submit").click(function(){
+
 			socket.emit("say", {data:$("#say").val()});
 			saysome();
-
-
 
 		});
 
@@ -24,6 +38,7 @@
 			$("#content").html(content+ "别人说：" + data.data);
 		});
 
+
 	});
 
 	function saysome(){
@@ -33,12 +48,19 @@
 
 	}
 
+
 </script>
 
 
 <input type='text' id='say' />
 <input type='submit' id='submit' />
 <div>
-	<span id='content'></span>
+	<div style="float: left; ">
+		<span id='content'></span>	
+	</div>
+	<div style="float: left; " >
+		在线上的人
+		<span id='onlinelist'></span>	
+	</div>
 </div>
 </html>
